@@ -1,6 +1,7 @@
 package ru.netology.cloudservice.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,16 +10,14 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
+@Builder
 @Table(name = "files")
 @AllArgsConstructor
 @NoArgsConstructor
-public class File {
+public class Files {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String filename;
 
     @Column(nullable = false)
@@ -29,4 +28,5 @@ public class File {
 
     @ManyToOne
     private User user;
+
 }
