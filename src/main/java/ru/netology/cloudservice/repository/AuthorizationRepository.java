@@ -17,4 +17,8 @@ public class AuthorizationRepository {
     public String getUserNameByToken(String token) {
         return tokenAndUserNames.get(token);
     }
+
+    public void removeTokenAndUsernameByToken(String token) {
+        tokenAndUserNames.remove(token);
+    }
 }
