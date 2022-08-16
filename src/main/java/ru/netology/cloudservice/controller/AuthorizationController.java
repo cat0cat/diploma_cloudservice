@@ -16,8 +16,10 @@ public class AuthorizationController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthorizationRequest authorizationRequest) {
-        service.login(authorizationRequest);
-        return ResponseEntity.ok(HttpStatus.OK);
+        var response = service.login(authorizationRequest);
+        if (response == null)
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/logout")

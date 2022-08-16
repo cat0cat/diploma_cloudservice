@@ -48,15 +48,26 @@ public class SecurityConfiguration {
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.cors().and().csrf().disable()
                 .headers().frameOptions().disable()
+
                 .and()
-                .authorizeRequests().antMatchers("/h2-console/**", "/login").permitAll()
-                .anyRequest().authenticated()
+                .authorizeRequests().antMatchers("/h2-console/**", "/login")
+                .permitAll()
+                .anyRequest()
+                .authenticated()
+
                 .and()
-                .logout().logoutUrl("/logout").deleteCookies("JSESSIONID").clearAuthentication(true).logoutSuccessUrl("/login")
+                .logout().logoutUrl("/logout")
+                .deleteCookies("JSESSIONID")
+                .clearAuthentication(true)
+                .logoutSuccessUrl("/login")
+
                 .and()
-                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         return http.build();
     }
 

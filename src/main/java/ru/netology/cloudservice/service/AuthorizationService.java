@@ -3,6 +3,8 @@ package ru.netology.cloudservice.service;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import ru.netology.cloudservice.config.TokenProvider;
@@ -19,14 +21,16 @@ public class AuthorizationService {
     private TokenProvider tokenProvider;
     private UserService userService;
 
-    public void login(AuthorizationRequest authorizationRequest) {
+    public AuthorizationResponse login(AuthorizationRequest authorizationRequest) {
         final String username = authorizationRequest.getLogin();
         final String password = authorizationRequest.getPassword();
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        final UserDetails userDetails = userService.loadUserByUsername(username);
-        final String token = tokenProvider.generateToken(userDetails);
+        Authentication authentication = authenticationManager.authenticate
+                (new UsernamePasswordAuthenticationToken(username, password));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        UserDetails userDetails = userService.loadUserByUsername(username);
+        String token = tokenProvider.generateToken(userDetails);
         authorizationRepository.putTokenAndUsername(token, username);
-        new AuthorizationResponse(token);
+        return new AuthorizationResponse(token);
     }
 
     public void logout(String authToken) {
