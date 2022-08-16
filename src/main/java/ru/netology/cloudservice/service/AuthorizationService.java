@@ -19,14 +19,14 @@ public class AuthorizationService {
     private TokenProvider tokenProvider;
     private UserService userService;
 
-    public AuthorizationResponse login(AuthorizationRequest authorizationRequest) {
+    public void login(AuthorizationRequest authorizationRequest) {
         final String username = authorizationRequest.getLogin();
         final String password = authorizationRequest.getPassword();
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        UserDetails userDetails = userService.loadUserByUsername(username);
-        String token = tokenProvider.generateToken(userDetails);
+        final UserDetails userDetails = userService.loadUserByUsername(username);
+        final String token = tokenProvider.generateToken(userDetails);
         authorizationRepository.putTokenAndUsername(token, username);
-        return new AuthorizationResponse(token);
+        new AuthorizationResponse(token);
     }
 
     public void logout(String authToken) {
