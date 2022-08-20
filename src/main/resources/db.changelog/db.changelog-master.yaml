@@ -5,3 +5,9 @@ databaseChangeLog:
   - include:
       file: migrations/files.xml
       relativeToChangeLogFile: true
+  - include:
+      file: migrations/insert_user_1.sql
+      relativeToChangeLogFile: true
+  - include:
+      file: migrations/insert_user_2.sql
+      relativeToChangeLogFile: true
