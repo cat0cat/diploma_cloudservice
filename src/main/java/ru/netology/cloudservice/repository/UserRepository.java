@@ -2,15 +2,15 @@ package ru.netology.cloudservice.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.netology.cloudservice.entity.User;
+import ru.netology.cloudservice.entity.Users;
 
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, String> {
+public interface UserRepository extends JpaRepository<Users, String> {
 
-    Optional<User> findByLogin(String login);
+    Optional<Users> findByLogin(String login);
 
-    //User findByLogin(String login);
+    void deleteByLogin(String login);
 
 }

@@ -1,6 +1,7 @@
 package ru.netology.cloudservice.service;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,6 +13,7 @@ import ru.netology.cloudservice.model.AuthorizationRequest;
 import ru.netology.cloudservice.model.AuthorizationResponse;
 import ru.netology.cloudservice.repository.AuthorizationRepository;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class AuthorizationService {
@@ -30,12 +32,18 @@ public class AuthorizationService {
         UserDetails userDetails = userService.loadUserByUsername(username);
         String token = tokenProvider.generateToken(userDetails);
         authorizationRepository.putTokenAndUsername(token, username);
+        log.info("User {} is authorized", username);
         return new AuthorizationResponse(token);
     }
 
     public void logout(String authToken) {
-        final String token = authToken.substring(7);
-        authorizationRepository.removeTokenAndUsernameByToken(token);
+        if (authToken.startsWith("Bearer ")) {
+            authToken = authToken.substring(7);
+        }
+        final String username = authorizationRepository.getUserNameByToken(authToken);
+        log.info("User {} logout", username);
+        authorizationRepository.removeTokenAndUsernameByToken(authToken);
+
     }
 
 }

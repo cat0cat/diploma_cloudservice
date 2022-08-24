@@ -10,8 +10,15 @@
                 <constraints primaryKey="true" nullable="false" unique="true"/>
             </column>
             <column name="date" type="datetime">
+                <constraints nullable="false"/>
             </column>
             <column name="size" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content" type="longblob">
             </column>
         </createTable>
     </changeSet>

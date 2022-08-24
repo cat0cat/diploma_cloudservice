@@ -26,7 +26,13 @@ public class Files {
     @Column(nullable = false)
     private Long size;
 
+    @Column(nullable = false)
+    private String type;
+
+    @Lob
+    private byte[] content;
+
     @ManyToOne
-    private User user;
+    private Users user;
 
 }
